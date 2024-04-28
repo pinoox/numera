@@ -21,12 +21,7 @@ You can install Numera using Composer:
 ```
 composer require pinoox/numera
 ```
-### Manual Installation
 
-You can also download the library manually and include it in your project:
-```php
-require_once 'path/to/Numera/autoload.php';
-```
 ### Initialize Numera
 
 To use Numera, you need to initialize it with a locale. You can do this using the `init` method:
@@ -141,7 +136,7 @@ If you'd like to contribute to Numera, please fork the repository and submit a p
 **Documentation**
 -------------
 
-* [README.md](Readme.md) - This file
+* [README.md](Readme.md) - Documents
 * [TranslationGuide.md](TranslationGuide.md) - Guide for creating a new language pack
 
 **License**
