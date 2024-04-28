@@ -1,0 +1,36 @@
+{
+  "name": "pinoox/numera",
+  "description": "Translate Numera",
+  "keywords": [
+    "PHP",
+    "number translate"
+  ],
+  "type": "project",
+  "version": "1.0.0",
+  "homepage": "http://www.pinoox.com/",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Pinoox",
+      "email": "dev@pinoox.com"
+    }
+  ],
+  "require": {
+    "php": "^8.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Pino\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Pino\\Tests\\": "tests/"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require-dev": {
+    "phpunit/phpunit": "^10.5"
+  }
+}

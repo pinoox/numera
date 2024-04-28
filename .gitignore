@@ -1,0 +1,17 @@
+# IntelliJ IDEA
+.idea
+.vscode
+
+# Node Js
+node_modules
+package-lock.json
+
+# Composer
+vendor
+/composer.lock
+
+# PHPUnit
+.phpunit.result.cache
+
+# MacOS
+.DS_Store
