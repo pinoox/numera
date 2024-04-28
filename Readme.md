@@ -56,20 +56,20 @@ To use Numera, you need to initialize it with a locale. You can do this using th
 ```php
 use Translate\Numera;
 
-$number = Numera::init('en'); // Initialize with English locale
+$numera = Numera::init('en'); // Initialize with English locale
 ```
 
 ### Convert Numbers to Words
 
 To convert a number to words, use the `convertNumeraToWords` method:
 ```php
-$result = $number->convertNumeraToWords(4454545156);
+$result = $numera->convertNumeraToWords(4454545156);
 echo $result; // Output: "four billion, four hundred fifty-four million, five hundred forty-five thousand, one hundred fifty-six"
 ```
 
 Alternatively, you can use the `n2w` method for a simpler syntax:
 ```php
-$result = $number->n2w('4,454,545,156');
+$result = $numera->n2w('4,454,545,156');
 echo $result; // Output: "four billion, four hundred fifty-four million, five hundred forty-five thousand, one hundred fifty-six"
 ```
 
@@ -77,19 +77,19 @@ echo $result; // Output: "four billion, four hundred fifty-four million, five hu
 
 To convert words to a number, use the `convertWordsToNumera` method:
 ```php
-$result = $number->convertWordsToNumera('four billion, four hundred fifty-four million, five hundred forty-five thousand, one hundred fifty-six');
+$result = $numera->convertWordsToNumera('four billion, four hundred fifty-four million, five hundred forty-five thousand, one hundred fifty-six');
 echo $result; // Output: 4454545156
 ```
 
 Alternatively, you can use the `w2n` method for a simpler syntax:
 ```php
-$result = $number->w2n('four billion, four hundred fifty-four million, five hundred forty-five thousand, one hundred fifty-six');
+$result = $numera->w2n('four billion, four hundred fifty-four million, five hundred forty-five thousand, one hundred fifty-six');
 echo $result; // Output: 4454545156
 ```
 
 You can also specify separators for the `w2n` method:
 ```php
-$result = $number->w2n('four billion, four hundred fifty-four million, five hundred forty-five thousand, one hundred fifty-six', [' ', ',']);
+$result = $numera->w2n('four billion, four hundred fifty-four million, five hundred forty-five thousand, one hundred fifty-six', [' ', ',']);
 echo $result; // Output: 4454545156
 ```
 
@@ -97,18 +97,9 @@ echo $result; // Output: 4454545156
 
 To use camel case for output words, use the `setCamelCase` method:
 ```php
-$number->setCamelCase(true);
-$result = $number->convertNumeraToWords('4,454,545,156');
+$numera->setCamelCase(true);
+$result = $numera->convertNumeraToWords('4,454,545,156');
 echo $result; // Output: "Four Billion, Four Hundred Fifty-Four Million, Five Hundred Forty-Five Thousand, One Hundred Fifty-Six"
-```
-
-### Example
-
-Here is an example of using Numera to convert a number to words with camel case:
-```php
-$number = Numera::init('en');
-$result = $number->setCamelCase(true)->convertNumberToWords(4454545156);
-$this->assertEquals('Four Billion, Four Hundred Fifty-Four Million, Five Hundred Forty-Five Thousand, One Hundred Fifty-Six', $result);
 ```
 
 ### Supported Languages
@@ -122,21 +113,21 @@ Numera currently supports the following languages:
 
 To set the locale for the Numera object, use the `setLocale` method:
 ```php
-$number->setLocale('fa'); // Set locale to Persian
+$numera->setLocale('fa'); // Set locale to Persian
 ```
 
 ### Set Locale Fallback
 
 To set the fallback locale for the Numera object, use the `setLocaleFallback` method:
 ```php
-$number->setLocaleFallback('en'); // Set fallback locale to English
+$numera->setLocaleFallback('en'); // Set fallback locale to English
 ```
 
 ### Get Translates
 
 To get the translates for the current locale, use the `getTranslates` method:
 ```php
-$translates = $number->getTranslates();
+$translates = $numera->getTranslates();
 print_r($translates); // Output: Array of translates for the current locale
 ```
 
@@ -144,7 +135,7 @@ print_r($translates); // Output: Array of translates for the current locale
 
 To add translates for a specific locale, use the `addTranslate` method:
 ```php
-$number->addTranslate('fr', ['hello' => 'bonjour']); // Add French translates
+$numera->addTranslate('fr', ['four' => 'quatre']); // Add French translates
 ```
 
 ### Create a New Language
