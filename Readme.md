@@ -1,7 +1,34 @@
 **Numera: A PHP Library for Number to Words Conversion**
 =====================================================
 
+[![Latest Stable Version](https://poser.pugx.org/pinoox/numera/v/stable)](https://packagist.org/packages/pinoox/numera)
+[![GitHub Stars](https://img.shields.io/github/stars/pinoox/numera.svg)](https://github.com/pinoox/numera/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/pinoox/numera.svg)](https://github.com/pinoox/numera/network)
+[![GitHub Issues](https://img.shields.io/github/issues/pinoox/numera.svg)](https://github.com/pinoox/numera/issues)
+[![License](https://img.shields.io/github/license/pinoox/numera.svg)](https://github.com/pinoox/numera/blob/master/LICENSE)
+[![Total Downloads](https://poser.pugx.org/pinoox/numera/downloads)](https://packagist.org/packages/pinoox/numera)
+
 Numera is a PHP library that provides a simple and efficient way to convert numbers to words and vice versa. It supports multiple languages and can be easily extended to support more languages.
+
+* [Features](#features)
+* [Installation and Setup](#installation-and-setup)
+    * [Install via Composer](#install-via-composer)
+    * [Initialize Numera](#initialize-numera)
+* [Usage](#usage)
+    * [Convert Numbers to Words](#convert-numbers-to-words)
+    * [Convert Words to Numbers](#convert-words-to-numbers)
+    * [Use Camel Case](#use-camel-case)
+* [Example](#example)
+* [Supported Languages](#supported-languages)
+* [Set Locale](#set-locale)
+* [Set Locale Fallback](#set-locale-fallback)
+* [Get Translates](#get-translates)
+* [Add Translate](#add-translate)
+* [Create a New Language](#create-a-new-language)
+* [Author](#author)
+* [Contributing](#contributing)
+* [Documentation](#documentation)
+* [License](#license)
 
 **Features**
 ------------
@@ -11,6 +38,7 @@ Numera is a PHP library that provides a simple and efficient way to convert numb
 * Support for multiple languages (currently English and Persian, with more to come)
 * Camel case support for output words
 * Easy to use and extend
+
 
 **Installation and Setup**
 -------------------------
