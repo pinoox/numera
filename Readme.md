@@ -61,9 +61,9 @@ $numera = Numera::init('en'); // Initialize with English locale
 
 ### Convert Numbers to Words
 
-To convert a number to words, use the `convertNumeraToWords` method:
+To convert a number to words, use the `convertNumberToWords` method:
 ```php
-$result = $numera->convertNumeraToWords(4454545156);
+$result = $numera->convertNumberToWords(4454545156);
 echo $result; // Output: "four billion, four hundred fifty-four million, five hundred forty-five thousand, one hundred fifty-six"
 ```
 
@@ -75,9 +75,9 @@ echo $result; // Output: "four billion, four hundred fifty-four million, five hu
 
 ### Convert Words to Numbers
 
-To convert words to a number, use the `convertWordsToNumera` method:
+To convert words to a number, use the `convertWordsToNumber` method:
 ```php
-$result = $numera->convertWordsToNumera('four billion, four hundred fifty-four million, five hundred forty-five thousand, one hundred fifty-six');
+$result = $numera->convertWordsToNumber('four billion, four hundred fifty-four million, five hundred forty-five thousand, one hundred fifty-six');
 echo $result; // Output: 4454545156
 ```
 
@@ -98,7 +98,7 @@ echo $result; // Output: 4454545156
 To use camel case for output words, use the `setCamelCase` method:
 ```php
 $numera->setCamelCase(true);
-$result = $numera->convertNumeraToWords('4,454,545,156');
+$result = $numera->convertNumberToWords('4,454,545,156');
 echo $result; // Output: "Four Billion, Four Hundred Fifty-Four Million, Five Hundred Forty-Five Thousand, One Hundred Fifty-Six"
 ```
 
