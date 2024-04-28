@@ -155,7 +155,7 @@ If you'd like to contribute to Numera, please fork the repository and submit a p
 **Documentation**
 -------------
 
-* [README.md](Readme.md) - Documents
+* [README.md](README.md) - Documents
 * [TranslationGuide.md](TranslationGuide.md) - Guide for creating a new language pack
 
 **License**
