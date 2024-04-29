@@ -41,8 +41,13 @@ class Numera
             return;
 
         $path = __DIR__ . "/lang/{$locale}.php";
+        $this->addTranslateFile($locale, $path);
+    }
+
+    public function addTranslateFile($locale, string $path): void
+    {
         if (file_exists($path)) {
-            $this->translations[$this->locale] = include $path;
+            $this->translations[$locale] = include $path;
         }
     }
 
@@ -88,7 +93,7 @@ class Numera
             return $str;
     }
 
-    public function convertNumberToWords($num)
+    public function convertToWords($num)
     {
         $num = str_replace(',', '', $num);
         $num = intval(trim($num));
@@ -118,6 +123,21 @@ class Numera
 
             return $this->replaceSeparator($result);
         }
+    }
+
+    public function convertToSummary($num): string
+    {
+        $thousands = $this->dataNumber('thousands');
+        $num = str_replace(',', '', $num);
+        $num = number_format($num);
+        $parts = explode(',', $num);
+        $count = count($parts) - 1;
+        $result = '';
+        foreach ($parts as $i => $part) {
+            $result .= $i === 0 ? $part . '{thousand}' . $this->translate($thousands[$count - $i]) : '{part}' . $part . '{thousand}' . $this->translate($thousands[$count - $i]);
+        }
+
+        return $this->replaceSeparator($result);
     }
 
     protected function getSeparators(): array
@@ -162,15 +182,20 @@ class Numera
 
     public function w2n($words, string|array|null $separators = null)
     {
-        return $this->convertWordsToNumber($words, $separators);
+        return $this->convertToNumber($words, $separators);
     }
 
     public function n2w($num)
     {
-        return $this->convertNumberToWords($num);
+        return $this->convertToWords($num);
+    }
+    
+    public function n2s($num)
+    {
+        return $this->convertToSummary($num);
     }
 
-    public function convertWordsToNumber($words, string|array|null $separators = null)
+    public function convertToNumber($words, string|array|null $separators = null)
     {
         $translations = $this->getLocaleTranslates();
         $translations = array_flip($translations);
@@ -181,13 +206,20 @@ class Numera
 
         foreach ($wordsArray as $word) {
             $word = strtolower($word);
-            if (!isset($translations[strtolower($word)]))
-                continue;
-            $word = $translations[$word];
 
-            if (!isset($numbers[$word]))
-                continue;
-            $num = intval($numbers[$word]);
+            if (is_numeric($word)) {
+                $num = intval($word);
+            } else {
+                if (!isset($translations[strtolower($word)]))
+                    continue;
+
+                $word = $translations[$word];
+
+                if (!isset($numbers[$word]))
+                    continue;
+
+                $num = intval($numbers[$word]);
+            }
 
 
             if ($word === 'hundred') {
