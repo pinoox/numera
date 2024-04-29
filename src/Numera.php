@@ -185,11 +185,16 @@ class Numera
         return $this->convertToNumber($words, $separators);
     }
 
+    public function s2n($words, string|array|null $separators = null)
+    {
+        return $this->convertToNumber($words, $separators);
+    }
+
     public function n2w($num)
     {
         return $this->convertToWords($num);
     }
-    
+
     public function n2s($num)
     {
         return $this->convertToSummary($num);
