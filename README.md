@@ -18,7 +18,6 @@ Numera is a PHP library that provides a simple and efficient way to convert numb
     * [Convert Numbers to Words](#convert-numbers-to-words)
     * [Convert Words to Numbers](#convert-words-to-numbers)
     * [Use Camel Case](#use-camel-case)
-* [Example](#example)
 * [Supported Languages](#supported-languages)
 * [Set Locale](#set-locale)
 * [Set Locale Fallback](#set-locale-fallback)
@@ -54,16 +53,16 @@ composer require pinoox/numera
 
 To use Numera, you need to initialize it with a locale. You can do this using the `init` method:
 ```php
-use Translate\Numera;
+use Pino\Numera;
 
 $numera = Numera::init('en'); // Initialize with English locale
 ```
 
 ### Convert Numbers to Words
 
-To convert a number to words, use the `convertNumberToWords` method:
+To convert a number to words, use the `convertToWords` method:
 ```php
-$result = $numera->convertNumberToWords(4454545156);
+$result = $numera->convertToWords(4454545156);
 echo $result; // Output: "four billion, four hundred fifty-four million, five hundred forty-five thousand, one hundred fifty-six"
 ```
 
@@ -73,17 +72,30 @@ $result = $numera->n2w('4,454,545,156');
 echo $result; // Output: "four billion, four hundred fifty-four million, five hundred forty-five thousand, one hundred fifty-six"
 ```
 
+### Convert Numbers to Summary
+
+To convert a number to summary words, use the `convertToSummary` method:
+```php
+$result = $numera->convertToSummary(4454545156);
+echo $result; // Output: "4 Billion, 454 Million, 545 Thousand, 156"
+```
+
+Alternatively, you can use the `n2w` method for a simpler syntax:
+```php
+$result = $numera->n2s('4,454,545,156');
+echo $result; // Output: "4 Billion, 454 Million, 545 Thousand, 156"
+```
 ### Convert Words to Numbers
 
-To convert words to a number, use the `convertWordsToNumber` method:
+To convert words to a number, use the `convertToNumber` method:
 ```php
-$result = $numera->convertWordsToNumber('four billion, four hundred fifty-four million, five hundred forty-five thousand, one hundred fifty-six');
+$result = $numera->convertToNumber('four billion, four hundred fifty-four million, five hundred forty-five thousand, one hundred fifty-six');
 echo $result; // Output: 4454545156
 ```
 
 Alternatively, you can use the `w2n` method for a simpler syntax:
 ```php
-$result = $numera->w2n('four billion, four hundred fifty-four million, five hundred forty-five thousand, one hundred fifty-six');
+$result = $numera->w2n("4 Billion, 454 Million, 545 Thousand, 156");
 echo $result; // Output: 4454545156
 ```
 
@@ -98,7 +110,7 @@ echo $result; // Output: 4454545156
 To use camel case for output words, use the `setCamelCase` method:
 ```php
 $numera->setCamelCase(true);
-$result = $numera->convertNumberToWords('4,454,545,156');
+$result = $numera->convertToWords('4,454,545,156');
 echo $result; // Output: "Four Billion, Four Hundred Fifty-Four Million, Five Hundred Forty-Five Thousand, One Hundred Fifty-Six"
 ```
 
