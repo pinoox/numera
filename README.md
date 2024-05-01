@@ -16,6 +16,7 @@ Numera is a PHP library that provides a simple and efficient way to convert numb
     * [Initialize Numera](#initialize-numera)
 * [Usage](#usage)
     * [Convert Numbers to Words](#convert-numbers-to-words)
+    * [Convert Numbers to Summary Words](#convert-numbers-to-summary)
     * [Convert Words to Numbers](#convert-words-to-numbers)
     * [Use Camel Case](#use-camel-case)
 * [Supported Languages](#supported-languages)
@@ -148,6 +149,13 @@ print_r($translates); // Output: Array of translates for the current locale
 To add translates for a specific locale, use the `addTranslate` method:
 ```php
 $numera->addTranslate('fr', ['four' => 'quatre']); // Add French translates
+```
+
+### Add Translate File
+
+To add translates by array file for a specific locale, use the `addTranslateFile` method:
+```php
+$numera->addTranslateFile('fr','/path/lang/fr.php'); // Add French translates
 ```
 
 ### Create a New Language
