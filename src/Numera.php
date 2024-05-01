@@ -110,13 +110,13 @@ class Numera
         } elseif ($num < 100) {
             return $this->translate($tens[(int)($num / 10)]) . ($num % 10 !== 0 ? '{ten}' . $this->translate($units[$num % 10]) : '');
         } elseif ($num < 1000) {
-            return $this->translate($hundreds[(int)($num / 100)]) . ($num % 100 !== 0 ? '{hundred}' . $this->convertNumberToWords($num % 100) : '');
+            return $this->translate($hundreds[(int)($num / 100)]) . ($num % 100 !== 0 ? '{hundred}' . $this->convertToWords($num % 100) : '');
         } else {
             $result = '';
             for ($i = 0; $num > 0; $i++) {
                 $part = $num % 1000;
                 if ($part !== 0) {
-                    $result = $this->convertNumberToWords($part) . '{thousand}' . $this->translate($thousands[$i]) . ($result ? '{part}' : '') . $result;
+                    $result = $this->convertToWords($part) . '{thousand}' . $this->translate($thousands[$i]) . ($result ? '{part}' : '') . $result;
                 }
                 $num = (int)($num / 1000);
             }
