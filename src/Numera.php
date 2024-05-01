@@ -44,10 +44,10 @@ class Numera
         $this->addTranslateFile($locale, $path);
     }
 
-    public function addTranslateFile($locale, string $path): void
+    public function addTranslateFile($locale, string $file): void
     {
-        if (file_exists($path)) {
-            $this->translations[$locale] = include $path;
+        if (file_exists($file)) {
+            $this->translations[$locale] = include $file;
         }
     }
 
