@@ -33,24 +33,38 @@ class NumeraTest extends TestCase
         $this->assertEquals('en', $number->getLocaleFallback());
     }
 
-    public function testConvertNumberToWords()
+    public function testConvertToWords()
     {
         $number = Numera::init('en');
-        $result = $number->convertNumberToWords('4,454,545,156');
+        $result = $number->convertToWords('4,454,545,156');
         $this->assertEquals('four billion, four hundred fifty-four million, five hundred forty-five thousand, one hundred fifty-six', $result);
+    }
+
+    public function testConvertToSummary()
+    {
+        $number = Numera::init('en');
+        $result = $number->convertToSummary('4,454,545,156');
+        $this->assertEquals('4 billion, 454 million, 545 thousand, 156', $result);
     }
 
     public function testN2w()
     {
         $number = Numera::init('en');
-        $result = $number->convertNumberToWords('4,454,545,156');
+        $result = $number->n2w('4,454,545,156');
         $this->assertEquals('four billion, four hundred fifty-four million, five hundred forty-five thousand, one hundred fifty-six', $result);
     }
 
-    public function testConvertNumberToWordsWithCamelCase()
+    public function testN2s()
     {
         $number = Numera::init('en');
-        $result = $number->setCamelCase(true)->convertNumberToWords(4454545156);
+        $result = $number->n2s('4,454,545,156');
+        $this->assertEquals('4 billion, 454 million, 545 thousand, 156', $result);
+    }
+
+    public function testConvertToWordsWithCamelCase()
+    {
+        $number = Numera::init('en');
+        $result = $number->setCamelCase(true)->convertToWords(4454545156);
         $this->assertEquals('Four Billion, Four Hundred Fifty-Four Million, Five Hundred Forty-Five Thousand, One Hundred Fifty-Six', $result);
     }
 
@@ -61,10 +75,10 @@ class NumeraTest extends TestCase
         $this->assertEquals(4454545156, $result);
     }
 
-    public function testConvertWordsToNumberWithCameCase()
+    public function testConvertToNumberWithCameCase()
     {
         $number = Numera::init('en');
-        $result = $number->setCamelCase(true)->convertWordsToNumber('Four Billion, Four Hundred Fifty-Four Million, Five Hundred Forty-Five Thousand, One Hundred Fifty-Six');
+        $result = $number->setCamelCase(true)->convertToNumber('Four Billion, Four Hundred Fifty-Four Million, Five Hundred Forty-Five Thousand, One Hundred Fifty-Six');
         $this->assertEquals(4454545156, $result);
     }
 
