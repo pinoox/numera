@@ -5,7 +5,7 @@
     "PHP",
     "number translate"
   ],
-  "type": "project",
+  "type": "library",
   "version": "1.1.2",
   "homepage": "http://www.pinoox.com/",
   "license": "MIT",
