@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.1 — 2026-05-25
+
+### Changed
+
+- Laravel bridge moved to standalone repo [pinoox/numera-laravel](https://github.com/pinoox/numera-laravel) (removed `packages/laravel/` from this repository)
+
 ## 2.1.0 — 2026-05-25
 
 ### Added
@@ -10,14 +16,14 @@
 - **Phone numbers**: `toPhone()` / `n2p()` — digit-by-digit, locale-aware
 - **Roman numerals**: `toRoman()` / `n2r()`, static `Numera::fromRoman()` (1–3999)
 - **Utility reading**: `toIp()` / `n2ip()`, `toVersion()` for IPv4 and semver strings
-- **Laravel package**: `pinoox/numera-laravel` in `packages/laravel/` (ServiceProvider, Facade, config)
+- **Laravel package**: `pinoox/numera-laravel` (now a [separate repository](https://github.com/pinoox/numera-laravel))
 - **CI**: GitHub Actions (PHP 8.0–8.3, PHPUnit coverage, Laravel package tests)
 - New support classes under `src/Support/` and `src/Languages/EnglishStrategy.php`
 
 ### Documentation
 
 - Expanded README (API reference, quick start, monorepo layout)
-- `packages/laravel/README.md` for Laravel integration
+- Laravel integration documented in [numera-laravel](https://github.com/pinoox/numera-laravel)
 
 ## 2.0.0 — 2026-05-25
 

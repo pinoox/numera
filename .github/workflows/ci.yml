@@ -35,24 +35,3 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage.xml
           fail_ci_if_error: false
-
-  laravel:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.3'
-
-      - name: Install main package
-        run: composer install --prefer-dist --no-progress
-
-      - name: Install Laravel package
-        working-directory: packages/laravel
-        run: composer install --prefer-dist --no-progress
-
-      - name: Run Laravel package tests
-        working-directory: packages/laravel
-        run: vendor/bin/phpunit

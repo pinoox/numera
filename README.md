@@ -125,7 +125,6 @@ src/
   Languages/              # English-specific year rules
   lang/                   # Per-locale translations (184+ files)
   data/                   # numbers.php, regional-locales, …
-packages/laravel/         # Laravel bridge (see packages/laravel/README.md)
 tests/                    # PHPUnit (1000+ tests)
 ```
 
@@ -176,7 +175,7 @@ All methods from the core library (`n2w`, `w2n`, `toCurrency`, `toFraction`, …
 
 ### More detail
 
-* Full Laravel guide: [packages/laravel/README.md](packages/laravel/README.md)
+* Full Laravel guide: [github.com/pinoox/numera-laravel](https://github.com/pinoox/numera-laravel)
 * Core API (all locales and options): sections below in this README
 
 
@@ -496,13 +495,9 @@ composer install
 vendor/bin/phpunit
 ```
 
-Laravel package tests:
+Laravel package CI runs in [pinoox/numera-laravel](https://github.com/pinoox/numera-laravel).
 
-```bash
-cd packages/laravel && composer install && vendor/bin/phpunit
-```
-
-CI runs on push/PR to `master` (see `.github/workflows/ci.yml`).
+CI for this library runs on push/PR to `master` (see `.github/workflows/ci.yml`).
 
 
 **Upgrade from 2.0**
@@ -521,7 +516,7 @@ New methods are additive; existing `n2w`, `w2n`, `toCurrency`, etc. are unchange
 * [README.md](README.md) — This file
 * [CHANGELOG.md](CHANGELOG.md) — Release history
 * [TranslationGuide.md](TranslationGuide.md) — Creating or extending language packs
-* [packages/laravel/README.md](packages/laravel/README.md) — **Laravel users:** install guide (`composer require pinoox/numera-laravel`)
+* [pinoox/numera-laravel](https://github.com/pinoox/numera-laravel) — **Laravel users:** `composer require pinoox/numera-laravel`
 * [src/lang/_schema.php](src/lang/_schema.php) — Expected locale file structure
 * [src/lang/en.php](src/lang/en.php) — Reference locale (full v2.1 keys)
 
