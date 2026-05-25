@@ -1,0 +1,53 @@
+<?php
+/**
+ * @author   yoosefap
+ * @license  https://opensource.org/licenses/MIT MIT License
+ */
+
+
+return [
+    'zero' => 'null',
+    'one' => 'eins',
+    'two' => 'zwei',
+    'three' => 'drei',
+    'four' => 'vier',
+    'five' => 'fünf',
+    'six' => 'sechs',
+    'seven' => 'sieben',
+    'eight' => 'acht',
+    'nine' => 'neun',
+    'ten' => 'zehn',
+    'eleven' => 'elf',
+    'twelve' => 'zwölf',
+    'thirteen' => 'dreizehn',
+    'fourteen' => 'vierzehn',
+    'fifteen' => 'fünfzehn',
+    'sixteen' => 'sechzehn',
+    'seventeen' => 'siebzehn',
+    'eighteen' => 'achtzehn',
+    'nineteen' => 'neunzehn',
+    'twenty' => 'zwanzig',
+    'thirty' => 'dreißig',
+    'forty' => 'vierzig',
+    'fifty' => 'fünfzig',
+    'sixty' => 'sechzig',
+    'seventy' => 'siebzig',
+    'eighty' => 'achtzig',
+    'ninety' => 'neunzig',
+    'hundred' => 'hundert',
+    'one_hundred' => 'einhundert',
+    'two_hundred' => 'zweihundert',
+    'three_hundred' => 'dreihundert',
+    'four_hundred' => 'vierhundert',
+    'five_hundred' => 'fünfhundert',
+    'six_hundred' => 'sechshundert',
+    'seven_hundred' => 'siebenhundert',
+    'eight_hundred' => 'achthundert',
+    'nine_hundred' => 'neunhundert',
+    'thousand' => 'Tausend',
+    'million' => 'Millionen',
+    'billion' => 'Milliarden',
+    'trillion' => 'Billionen',
+    'quadrillion' => 'Billiarde',
+    'quintillion' => 'Trillion',
+];
