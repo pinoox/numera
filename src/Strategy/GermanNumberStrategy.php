@@ -211,7 +211,10 @@ class GermanNumberStrategy implements NumberStrategyInterface
             return $word === 'ein' ? 1 : 0;
         }
 
-        $translations = array_flip(array_map('mb_strtolower', $numera->getLocaleTranslates()));
+        $translations = array_flip(array_map(
+            'mb_strtolower',
+            array_filter($numera->getLocaleTranslates(), static fn($value) => is_string($value))
+        ));
         $numbers = $numera->dataNumber('numbers');
 
         if (!isset($translations[$word])) {

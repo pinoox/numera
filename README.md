@@ -16,6 +16,11 @@ Numera is a PHP library that provides a simple and efficient way to convert numb
     * [Initialize Numera](#initialize-numera)
 * [Usage](#usage)
     * [Convert Numbers to Words](#convert-numbers-to-words)
+    * [Negative Numbers](#negative-numbers)
+    * [Decimal Numbers](#decimal-numbers)
+    * [Ordinal Numbers](#ordinal-numbers)
+    * [Currency Formatting](#currency-formatting)
+    * [Units](#units)
     * [Convert Numbers to Summary Words](#convert-numbers-to-summary)
     * [Convert Words to Numbers](#convert-words-to-numbers)
     * [Use Camel Case](#use-camel-case)
@@ -35,7 +40,14 @@ Numera is a PHP library that provides a simple and efficient way to convert numb
 
 * Convert numbers to words (e.g. 1234 to "one thousand two hundred thirty-four")
 * Convert words to numbers (e.g. "one thousand two hundred thirty-four" to 1234)
-* Support for multiple languages (currently English and Persian, with more to come)
+* Negative numbers (`n2w(-500)` → "negative five hundred")
+* Decimal numbers (`n2w(3.14)` → "three point one four")
+* Ordinal numbers (`toOrdinal(21)` / `n2o(21)` → "twenty-first")
+* Currency formatting (`toCurrency(1250.50, 'USD')`)
+* Units with singular/plural (`withUnit(3, 'kg')` → "three kilograms")
+* Weekday names (`toWeekday(1)` / `getWeekdays()` — Monday=1 ISO, or `saturday`, …)
+* Cross-locale word translation (`translateTo('en', 'دویست و یک')` / `t2t()`)
+* 180+ ISO 639-1 language packs (English and Persian fully extended)
 * Camel case support for output words
 * Easy to use and extend
 
@@ -71,6 +83,101 @@ Alternatively, you can use the `n2w` method for a simpler syntax:
 ```php
 $result = $numera->n2w('4,454,545,156');
 echo $result; // Output: "four billion, four hundred fifty-four million, five hundred forty-five thousand, one hundred fifty-six"
+```
+
+### Negative Numbers
+
+```php
+echo Numera::init('en')->n2w(-500);  // negative five hundred
+echo Numera::init('fa')->n2w(-500);  // منفی پانصد
+```
+
+### Decimal Numbers
+
+Each digit after the decimal separator is read individually. Accepts floats or strings (`3.14`, `1,250.75`).
+
+```php
+echo Numera::init('en')->n2w(3.14);       // three point one four
+echo Numera::init('en')->n2w('1,250.75'); // one thousand, two hundred fifty point seven five
+echo Numera::init('fa')->n2w(3.14);       // سه ممیز یک چهار
+```
+
+### Ordinal Numbers
+
+```php
+$numera = Numera::init('en');
+echo $numera->toOrdinal(21);  // twenty-first
+echo $numera->n2o(100);       // one hundredth
+
+$numera->setLocale('fa');
+echo $numera->toOrdinal(3);   // سوم
+echo $numera->toOrdinal(21);  // بیست و یکم
+```
+
+### Currency Formatting
+
+Supported codes: `USD`, `EUR`, `GBP`, `IRR`, `IRT` (extend via language file `currencies` maps).
+
+```php
+echo Numera::init('en')->toCurrency(1250.50, 'USD');
+// one thousand, two hundred fifty dollars and fifty cents
+
+echo Numera::init('fa')->toCurrency(150000, 'IRR');
+// صد و پنجاه هزار ریال
+
+echo Numera::init('en')->toCurrency(3.01, 'GBP');
+// three pounds and one penny
+```
+
+### Units
+
+Supported units: `kg`, `g`, `km`, `m`, `cm`, `hour`, `minute`, `second`, `day`, `week`, `month`, `year`.
+
+```php
+echo Numera::init('en')->withUnit(1, 'kg');   // one kilogram
+echo Numera::init('en')->withUnit(5, 'hour'); // five hours
+echo Numera::init('fa')->withUnit(1, 'day');  // یک روز
+```
+
+### Weekdays
+
+Day names live in each language file under `weekdays` (`monday` … `sunday`). Use ISO weekday numbers (1 = Monday … 7 = Sunday), PHP `date('w')` (0 = Sunday … 6 = Saturday), or the English key name.
+
+```php
+echo Numera::init('en')->toWeekday(1);        // monday
+echo Numera::init('en')->toWeekday('friday'); // friday
+echo Numera::init('fa')->toWeekday(5);        // جمعه (ISO: Friday)
+echo Numera::init('fa')->toWeekday(6);        // شنبه (ISO: Saturday)
+echo Numera::init('fa')->d2w('saturday');     // شنبه
+
+// All days; Persian locale starts on Saturday (meta.week_starts_on)
+print_r(Numera::init('fa')->getWeekdays());
+```
+
+Optional `meta.week_starts_on` in `src/lang/{locale}.php` controls the order returned by `getWeekdays()` (default: `monday`).
+
+### Cross-locale translation (words → words)
+
+Convert spoken/written text in one language to another via a neutral intermediate (integer or weekday key):
+
+```php
+// Persian → English
+echo Numera::init('fa')->translateTo('en', 'دویست و یک');  // two hundred one
+echo Numera::init('fa')->translateTo('en', 'شنبه');       // saturday
+
+// English → Persian
+echo Numera::init('en')->translateTo('fa', 'two hundred one'); // دویست و یک
+echo Numera::init('en')->t2t('monday', 'fa');                 // دوشنبه
+
+LocaleTranslator::between('fa', 'en')->translate('منفی پانصد'); // negative five hundred
+```
+
+Supports cardinal numbers (including negative and decimal phrases), and weekday names. Currency/unit phrases are not converted yet.
+
+Chain with locale and camel case:
+
+```php
+echo Numera::init('en')->setCamelCase(true)->n2w(-10); // Negative Ten
 ```
 
 ### Convert Numbers to Summary
@@ -117,10 +224,27 @@ echo $result; // Output: "Four Billion, Four Hundred Fifty-Four Million, Five Hu
 
 ### Supported Languages
 
-Numera currently supports the following languages:
+Numera ships with **184 ISO 639-1** language packs under `src/lang/`, plus **regional variants** such as `en-US`, `en-GB`, `fa-IR`, `de-DE` (see `src/data/regional-locales.php`). Each base file contains cardinals, separators, and v1.2 keys (`negative`, `point`, `ordinals`, `currencies`, `units`, `weekdays`, …). Edit the locale file directly — see `src/lang/en.php` and `TranslationGuide.md`.
 
-* English (en)
-* Persian (fa)
+**Regional variants (BCP 47):** Files like `src/lang/en-US.php` only declare overrides (usually `meta.region`); translations are merged from the parent (`en.php` → `en-US.php`). Configured regions are listed in `src/data/regional-locales.php`.
+
+```php
+Numera::init('en-US')->n2w(42);       // same words as en, US meta
+Numera::init('en-GB')->toCurrency(3.01, 'GBP');
+Numera::init('fa-IR')->getWeekdays();  // inherits fa (week starts Saturday)
+Numera::init('de-AT')->getStrategyName(); // german (inherited from de)
+```
+
+**Number strategies:** Languages with special compounding use `meta.strategy` in the lang file (see `src/data/locale-strategies.php`):
+
+| Strategy | Locales | Reason |
+|----------|---------|--------|
+| `german` | `de`, `de-*` | Inverted tens (`einundzwanzig`), `tausend` concatenation |
+| `french` | `fr`, `fr-*` | Vigesimal 70–99 (`soixante-dix`, `quatre-vingts`) |
+| `multiplier_tens` | `id`, `ms`, `vi`, `jv`, `tl`, `mi`, `sm`, `to`, `ty` | `dua puluh tiga` = 2×10+3, not 2+10+3 |
+| `default` | Most others | English-style place value |
+
+Welsh (`cy`), Breton (`br`), and some locales with incomplete lang data may still need dedicated strategies or richer translations in `src/lang/`.
 
 ### Set Locale
 

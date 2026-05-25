@@ -1,3 +1,13 @@
 <?php
 
-return include __DIR__ . '/de.php';
+/**
+ * Regional variant of de; inherits translations from de.php
+ */
+return array (
+  'meta' => 
+  array (
+    'parent' => 'de',
+    'region' => 'DE',
+    'label' => 'German (Germany)',
+  ),
+);

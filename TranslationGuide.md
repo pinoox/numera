@@ -1,7 +1,7 @@
 **Translation Guide**
 =====================
 ### Description
-The Numera translation guide is a comprehensive resource for creating language files for the Numera component. This guide provides a list of keys and their corresponding English translations, which can be used to format and manipulate numbers in various languages. By following this guide, you can create a language file that is compatible with the Numera component, allowing you to use it in your application with ease.
+The Numera translation guide is a comprehensive resource for creating language files for the Numera component. **Every translatable string belongs in `src/lang/{locale}.php`** (for example `src/lang/en.php`, `src/lang/fa.php`). The `src/data/` directory only holds non-translatable data (`numbers.php`, `iso639-1.php`). See `src/lang/_schema.php` and `src/lang/en.php` for a full v1.2 example including ordinals, currencies, and units.
 
 ### Numbers
 
@@ -67,6 +67,21 @@ The Numera translation guide is a comprehensive resource for creating language f
 | between.ten | ' - '                            | -        |
 | between.hundred | '&emsp;'                         | -        |
 | between.hundred.prefix | '&emsp;'                         | -        |
+| between.decimal | ' ' (digit separator in decimals) | -        |
+
+### Extension keys (v1.2+, all in `src/lang/{locale}.php`)
+
+| Key | Description |
+| --- | --- |
+| negative | Word for minus sign (e.g. `negative`, `منفی`) |
+| point | Decimal point word (e.g. `point`, `ممیز`) |
+| and | Conjunction for currency phrases (e.g. `and`, `و`) |
+| ordinal_suffix | Default ordinal suffix (Persian: `م`) |
+| ordinal_suffixes | English-style [th, st, nd, rd, th] |
+| ordinal_exceptions | Map of int → ordinal word for 1–20 (and 11–13) |
+| ordinals | Map of cardinal key → ordinal word (`one` → `first`) |
+| currencies | Nested map per code (`USD`, `EUR`, …) with `main_singular`, `main_plural`, optional `sub_*` |
+| units | Map per unit (`kg`, `hour`, …) with `singular` / `plural` |
 
 **Sample PHP Code**
 -------------------
