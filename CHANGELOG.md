@@ -4,7 +4,7 @@
 
 ### Changed
 
-- Laravel bridge moved to standalone repo [pinoox/numera-laravel](https://github.com/pinoox/numera-laravel) (removed `packages/laravel/` from this repository)
+- Laravel bridge moved to standalone repo [pinoox/numera-laravel](https://github.com/pinoox/numera-laravel); removed `packages/` directory from this repository
 
 ## 2.1.0 — 2026-05-25
 
