@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.1.0 — 2026-05-25
+
+### Added
+
+- **Input formats**: European (`1.234.567,89`), Swiss (`1'234'567.89`), Persian/Arabic digits, underscore separators — `Numera::detectFormat()`
+- **Fractions**: `toFraction()` / `n2f()` with `fractions` keys in `en` and `fa`
+- **Years**: `toYear()` / `n2y()` — English pair reading (e.g. 2024 → twenty twenty-four)
+- **Phone numbers**: `toPhone()` / `n2p()` — digit-by-digit, locale-aware
+- **Roman numerals**: `toRoman()` / `n2r()`, static `Numera::fromRoman()` (1–3999)
+- **Utility reading**: `toIp()` / `n2ip()`, `toVersion()` for IPv4 and semver strings
+- **Laravel package**: `pinoox/numera-laravel` in `packages/laravel/` (ServiceProvider, Facade, config)
+- **CI**: GitHub Actions (PHP 8.0–8.3, PHPUnit coverage, Laravel package tests)
+- New support classes under `src/Support/` and `src/Languages/EnglishStrategy.php`
+
+### Documentation
+
+- Expanded README (API reference, quick start, monorepo layout)
+- `packages/laravel/README.md` for Laravel integration
+
 ## 2.0.0 — 2026-05-25
 
 ### Added
@@ -23,4 +42,4 @@
 
 ## 1.x
 
-See git history for earlier releases (German strategy branch, initial multilingual support).
+See git history for earlier releases.

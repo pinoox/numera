@@ -15,10 +15,15 @@ namespace Pino;
 
 use Pino\Strategy\NumberStrategyInterface;
 use Pino\Strategy\StrategyResolver;
+use Pino\Support\FractionConverter;
 use Pino\Support\LocaleTranslator;
 use Pino\Support\NumberInputParser;
+use Pino\Support\PhoneReader;
+use Pino\Support\RomanNumeral;
+use Pino\Support\UtilityReader;
 use Pino\Support\WordPhraseParser;
 use Pino\Support\WeekdayHelper;
+use Pino\Support\YearReader;
 
 class Numera
 {
@@ -44,6 +49,14 @@ class Numera
     public static function init($lang = 'en', $defaultLang = 'en'): static
     {
         return new static($lang, $defaultLang);
+    }
+
+    /**
+     * Detect numeric string format: default, european, swiss, persian, or underscore.
+     */
+    public static function detectFormat(string $input): string
+    {
+        return NumberInputParser::detectFormat($input);
     }
 
     protected function loadTranslations($locale): void
@@ -591,6 +604,66 @@ class Numera
         $this->numberStrategy = $this->resolveNumberStrategy($locale);
 
         return $this;
+    }
+
+    public function toFraction(float $number): string
+    {
+        return FractionConverter::toFraction($this, $number);
+    }
+
+    public function n2f(float $number): string
+    {
+        return $this->toFraction($number);
+    }
+
+    public function toYear(int $year): string
+    {
+        return YearReader::toYear($this, $year);
+    }
+
+    public function n2y(int $year): string
+    {
+        return $this->toYear($year);
+    }
+
+    public function toPhone(string $phone): string
+    {
+        return PhoneReader::toPhone($this, $phone);
+    }
+
+    public function n2p(string $phone): string
+    {
+        return $this->toPhone($phone);
+    }
+
+    public function toRoman(int $number): string
+    {
+        return RomanNumeral::toRoman($number);
+    }
+
+    public function n2r(int $number): string
+    {
+        return $this->toRoman($number);
+    }
+
+    public static function fromRoman(string $roman): int
+    {
+        return RomanNumeral::fromRoman($roman);
+    }
+
+    public function toIp(string $ip): string
+    {
+        return UtilityReader::toIp($this, $ip);
+    }
+
+    public function n2ip(string $ip): string
+    {
+        return $this->toIp($ip);
+    }
+
+    public function toVersion(string $version): string
+    {
+        return UtilityReader::toVersion($this, $version);
     }
 
 }

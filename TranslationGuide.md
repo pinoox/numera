@@ -103,3 +103,18 @@ return [
 ];
 ```
 
+### Optional keys (v2.1+)
+
+For extended reading modes, add these blocks to fully extended locales (see `src/lang/en.php`):
+
+| Block | Used by |
+|-------|---------|
+| `fractions` | `toFraction()` / `n2f()` — `half`, `quarter`, `third`, `one`, `and`, `article`, `whole_*` |
+| `plus` | `toPhone()` — spoken “plus” before country code |
+| `dot` | `toIp()` — separator between octets |
+| `dash` | `toVersion()` — prerelease separator (e.g. `-beta`) |
+| `weekdays` | `toWeekday()`, `getWeekdays()` |
+| `currencies`, `units`, `ordinals` | `toCurrency()`, `withUnit()`, `toOrdinal()` |
+
+English year pairs (`toYear`) use built-in logic in `src/Languages/EnglishStrategy.php`; other locales fall back to cardinal `n2w()`.
+

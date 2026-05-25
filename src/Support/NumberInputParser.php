@@ -4,10 +4,19 @@ namespace Pino\Support;
 
 final class NumberInputParser
 {
+    public static function detectFormat(string $input): string
+    {
+        return InputFormatDetector::detect($input);
+    }
+
     public static function parse(int|float|string $input): ParsedNumber
     {
         $negative = false;
         $str = self::toNormalizedString($input);
+
+        if (is_string($input) && !is_numeric($input)) {
+            $str = InputFormatDetector::normalize($str);
+        }
 
         if ($str === '' || $str === '-') {
             return new ParsedNumber(false, 0, '');
@@ -44,7 +53,13 @@ final class NumberInputParser
             return $str === '' || $str === '-0' ? '0' : $str;
         }
 
-        return trim((string)$input);
+        $trimmed = trim((string)$input);
+
+        if ($trimmed !== '' && !is_numeric($trimmed)) {
+            return InputFormatDetector::normalize($trimmed);
+        }
+
+        return $trimmed;
     }
 
     /**

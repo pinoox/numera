@@ -1,6 +1,7 @@
 **Numera: A PHP Library for Number to Words Conversion**
 =====================================================
 
+[![Coverage](https://codecov.io/gh/pinoox/numera/branch/master/graph/badge.svg)](https://codecov.io/gh/pinoox/numera)
 [![Latest Stable Version](https://poser.pugx.org/pinoox/numera/v/stable)](https://packagist.org/packages/pinoox/numera)
 [![GitHub Stars](https://img.shields.io/github/stars/pinoox/numera.svg)](https://github.com/pinoox/numera/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/pinoox/numera.svg)](https://github.com/pinoox/numera/network)
@@ -8,9 +9,25 @@
 [![License](https://img.shields.io/github/license/pinoox/numera.svg)](https://github.com/pinoox/numera/blob/master/LICENSE)
 [![Total Downloads](https://poser.pugx.org/pinoox/numera/downloads)](https://packagist.org/packages/pinoox/numera)
 
-Numera is a PHP library that provides a simple and efficient way to convert numbers to words and vice versa. It supports multiple languages and can be easily extended to support more languages.
+Numera is a PHP library that converts numbers to words (and back), with support for **184 ISO 639-1 languages**, regional variants, ordinals, currency, units, weekdays, cross-locale translation, and specialized reading modes (fractions, years, phone numbers, Roman numerals, IP/version strings).
+
+**Requirements:** PHP ^8.0, Composer. No runtime dependencies.
+
+**Quick start:**
+
+```php
+use Pino\Numera;
+
+echo Numera::init('en')->n2w(1234);
+echo Numera::init('fa')->n2w('۱۲۳۴');
+echo Numera::init('en')->toYear(2024);
+```
+
+Install: `composer require pinoox/numera` — see [CHANGELOG.md](CHANGELOG.md) for release notes.
 
 * [Features](#features)
+* [API reference](#api-reference)
+* [Project layout](#project-layout)
 * [Installation and Setup](#installation-and-setup)
     * [Install via Composer](#install-via-composer)
     * [Initialize Numera](#initialize-numera)
@@ -24,6 +41,13 @@ Numera is a PHP library that provides a simple and efficient way to convert numb
     * [Convert Numbers to Summary Words](#convert-numbers-to-summary)
     * [Convert Words to Numbers](#convert-words-to-numbers)
     * [Use Camel Case](#use-camel-case)
+    * [Input Formats](#input-formats)
+    * [Fractions](#fractions)
+    * [Years](#years)
+    * [Phone Numbers](#phone-numbers)
+    * [Roman Numerals](#roman-numerals)
+    * [IP and Version Strings](#ip-and-version-strings)
+    * [Laravel Integration](#laravel-integration)
 * [Supported Languages](#supported-languages)
 * [Set Locale](#set-locale)
 * [Set Locale Fallback](#set-locale-fallback)
@@ -47,9 +71,61 @@ Numera is a PHP library that provides a simple and efficient way to convert numb
 * Units with singular/plural (`withUnit(3, 'kg')` → "three kilograms")
 * Weekday names (`toWeekday(1)` / `getWeekdays()` — Monday=1 ISO, or `saturday`, …)
 * Cross-locale word translation (`translateTo('en', 'دویست و یک')` / `t2t()`)
+* European, Swiss, Persian-digit, and underscore numeric input formats
+* Fractions (`toFraction()` / `n2f()`), year reading (`toYear()` / `n2y()`), phone numbers (`toPhone()` / `n2p()`)
+* Roman numerals (`toRoman()` / `n2r()`, `Numera::fromRoman()`)
+* IPv4 and semver reading (`toIp()` / `n2ip()`, `toVersion()`)
+* Laravel package [`pinoox/numera-laravel`](packages/laravel/)
 * 180+ ISO 639-1 language packs (English and Persian fully extended)
 * Camel case support for output words
 * Easy to use and extend
+* GitHub Actions CI (PHP 8.0–8.3) and optional Codecov badge
+
+
+**API reference**
+-----------------
+
+| Method | Alias | Description |
+|--------|-------|-------------|
+| `n2w($num)` | — | Number → words (supports multiple input formats) |
+| `w2n($words)` | `s2n` | Words → number |
+| `n2s($num)` | — | Number → summary (e.g. 4 Billion, 454 Million) |
+| `toOrdinal($n)` | `n2o` | Ordinal words |
+| `toCurrency($amount, $code)` | — | Money with main/sub units |
+| `withUnit($n, $unit)` | — | Amount + unit (kg, hour, …) |
+| `toWeekday($day)` | `d2w` | ISO key, index, or name → weekday word |
+| `getWeekdays()` | — | All weekdays (order from `meta.week_starts_on`) |
+| `translateTo($locale, $words)` | `t2t` | Cross-locale word translation |
+| `detectFormat($input)` | — | Static: `default`, `european`, `swiss`, `persian`, `underscore` |
+| `toFraction($float)` | `n2f` | Common fractions (half, quarter, …) |
+| `toYear($year)` | `n2y` | Year reading (English pairs; else cardinal) |
+| `toPhone($string)` | `n2p` | Phone digit-by-digit |
+| `toRoman($int)` | `n2r` | Integer → Roman (1–3999) |
+| `fromRoman($roman)` | — | Static: Roman → integer |
+| `toIp($ipv4)` | `n2ip` | IPv4 octets as words |
+| `toVersion($semver)` | — | Version string (digits + labels) |
+| `setLocale($code)` | — | Switch locale (loads `src/lang/{code}.php`) |
+| `setLocaleFallback($code)` | — | Fallback when a key is missing |
+| `setCamelCase($bool)` | — | Title-case output |
+
+Static helpers: `Numera::init($locale, $fallback)`, `getAvailableLocales()`, `hasLocale($code)`.
+
+
+**Project layout**
+------------------
+
+```
+src/
+  Numera.php              # Main API
+  LocaleRegistry.php      # Locale load/merge (regional variants)
+  Strategy/               # german, french, multiplier_tens, default
+  Support/                # Input parsers, fractions, phone, IP, …
+  Languages/              # English-specific year rules
+  lang/                   # Per-locale translations (184+ files)
+  data/                   # numbers.php, regional-locales, …
+packages/laravel/         # pinoox/numera-laravel (monorepo)
+tests/                    # PHPUnit (1000+ tests)
+```
 
 
 **Installation and Setup**
@@ -222,6 +298,93 @@ $result = $numera->convertToWords('4,454,545,156');
 echo $result; // Output: "Four Billion, Four Hundred Fifty-Four Million, Five Hundred Forty-Five Thousand, One Hundred Fifty-Six"
 ```
 
+### Input Formats
+
+`n2w()` and `w2n()` normalize these string formats before parsing:
+
+| Format | Example | `detectFormat()` |
+|--------|---------|------------------|
+| Default | `1234.56`, `1,250.75` | `default` |
+| European | `1.234.567,89` | `european` |
+| Swiss | `1'234'567.89` | `swiss` |
+| Persian/Arabic digits | `۱۲۳۴` | `persian` |
+| Underscore | `1_000_000` | `underscore` |
+
+```php
+Numera::detectFormat("1.234.567,89"); // european
+echo Numera::init('en')->n2w('۱۲۳۴');
+echo Numera::init('en')->n2w("1'234'567.89");
+echo Numera::init('en')->n2w('1_000_000');
+```
+
+### Fractions
+
+```php
+echo Numera::init('en')->toFraction(0.5);   // one half
+echo Numera::init('en')->n2f(1.5);         // one and a half
+echo Numera::init('fa')->toFraction(0.5);  // نیم
+```
+
+### Years
+
+English uses paired year reading (1999 → nineteen ninety-nine). Other locales use cardinal form.
+
+```php
+echo Numera::init('en')->toYear(2024);  // twenty twenty-four
+echo Numera::init('en')->n2y(2000);     // two thousand
+echo Numera::init('fa')->toYear(1402);  // cardinal Persian form
+```
+
+### Phone Numbers
+
+Reads digit-by-digit with locale-aware digit words.
+
+```php
+echo Numera::init('en')->toPhone('+1 415 555 0172');
+echo Numera::init('en')->n2p('021-8834-1100');
+```
+
+### Roman Numerals
+
+```php
+echo Numera::init('en')->toRoman(1999);      // MCMXCIX
+echo Numera::fromRoman('xiv');               // 14
+```
+
+### IP and Version Strings
+
+```php
+echo Numera::init('en')->toIp('192.168.1.1');
+echo Numera::init('en')->n2ip('10.0.0.1');
+echo Numera::init('en')->toVersion('2.14.0');
+echo Numera::init('en')->toVersion('1.0.0-beta');
+```
+
+### Laravel Integration
+
+The Laravel bridge lives in this monorepo under `packages/laravel/` ([full docs](packages/laravel/README.md)). On Packagist: `pinoox/numera-laravel`.
+
+```bash
+composer require pinoox/numera
+composer require pinoox/numera-laravel
+```
+
+```php
+use Pinoox\Numera\Laravel\Facades\Numera;
+
+echo Numera::n2w(42);
+echo Numera::toYear(2024);
+echo Numera::toFraction(0.5);
+```
+
+Publish config:
+
+```bash
+php artisan vendor:publish --tag=numera-config
+```
+
+Config keys: `default_locale`, `fallback_locale` (see `packages/laravel/config/numera.php`).
+
 ### Supported Languages
 
 Numera ships with **184 ISO 639-1** language packs under `src/lang/`, plus **regional variants** such as `en-US`, `en-GB`, `fa-IR`, `de-DE` (see `src/data/regional-locales.php`). Each base file contains cardinals, separators, and v1.2 keys (`negative`, `point`, `ordinals`, `currencies`, `units`, `weekdays`, …). Edit the locale file directly — see `src/lang/en.php` and `TranslationGuide.md`.
@@ -296,11 +459,42 @@ Numera was created by [Pinoox](https://www.pinoox.com/).
 
 If you'd like to contribute to Numera, please fork the repository and submit a pull request. We'd love to have your help.
 
+**Testing**
+---------
+
+```bash
+composer install
+vendor/bin/phpunit
+```
+
+Laravel package tests:
+
+```bash
+cd packages/laravel && composer install && vendor/bin/phpunit
+```
+
+CI runs on push/PR to `master` (see `.github/workflows/ci.yml`).
+
+
+**Upgrade from 2.0**
+--------------------
+
+```bash
+composer require pinoox/numera:^2.1
+```
+
+New methods are additive; existing `n2w`, `w2n`, `toCurrency`, etc. are unchanged. Add `fractions`, `plus`, `dot`, `dash` to custom lang files if you use `toFraction`, `toPhone`, `toIp`, or `toVersion`.
+
+
 **Documentation**
 -------------
 
-* [README.md](README.md) - Documents
-* [TranslationGuide.md](TranslationGuide.md) - Guide for creating a new language pack
+* [README.md](README.md) — This file
+* [CHANGELOG.md](CHANGELOG.md) — Release history
+* [TranslationGuide.md](TranslationGuide.md) — Creating or extending language packs
+* [packages/laravel/README.md](packages/laravel/README.md) — Laravel Facade and config
+* [src/lang/_schema.php](src/lang/_schema.php) — Expected locale file structure
+* [src/lang/en.php](src/lang/en.php) — Reference locale (full v2.1 keys)
 
 **License**
 ---------
