@@ -1,29 +1,47 @@
 # pinoox/numera-laravel
 
-Laravel integration for [pinoox/numera](https://github.com/pinoox/numera) — number-to-words conversion with Facade and config.
+Laravel integration for [pinoox/numera](https://github.com/pinoox/numera).
+
+## Who should use this?
+
+| Project type | Install |
+|--------------|---------|
+| **Laravel 9 / 10 / 11** | `composer require pinoox/numera-laravel` |
+| Plain PHP, other frameworks | [`pinoox/numera`](https://github.com/pinoox/numera) only — see main [README](../../README.md) |
+
+`pinoox/numera-laravel` depends on `pinoox/numera`; you do **not** need a separate `composer require pinoox/numera` in Laravel apps.
 
 ## Requirements
 
 - PHP ^8.0
-- Laravel 9, 10, or 11 (`illuminate/support` ^9|^10|^11)
-- `pinoox/numera` ^2.1
+- Laravel 9, 10, or 11
+- `illuminate/support` ^9.0 | ^10.0 | ^11.0
 
 ## Installation
 
 ```bash
-composer require pinoox/numera
 composer require pinoox/numera-laravel
 ```
 
-Laravel auto-discovers `NumeraServiceProvider` and registers the `Numera` facade alias.
+Laravel auto-discovers:
 
-### Publish configuration
+- `Pinoox\Numera\Laravel\NumeraServiceProvider`
+- Facade alias `Numera` → `Pinoox\Numera\Laravel\Facades\Numera`
+
+## Configuration
+
+Publish config once:
 
 ```bash
 php artisan vendor:publish --tag=numera-config
 ```
 
 `config/numera.php`:
+
+| Key | Description |
+|-----|-------------|
+| `default_locale` | Locale on boot (e.g. `en`, `fa`, `fa-IR`) |
+| `fallback_locale` | Used when a translation key is missing |
 
 ```php
 return [
@@ -37,36 +55,35 @@ return [
 ```php
 use Pinoox\Numera\Laravel\Facades\Numera;
 
-// Cardinal
 echo Numera::n2w(2024);
-
-// New in 2.1
 echo Numera::toYear(2024);
-echo Numera::toFraction(1.5);
-echo Numera::toPhone('+98 21 8834');
-echo Numera::toIp('192.168.1.1');
-echo Numera::toVersion('2.14.0');
+echo Numera::toCurrency(1500, 'USD');
 
-// Locale at runtime
 Numera::setLocale('fa');
-echo Numera::n2w(-500);
+echo Numera::n2w('۱۲۳۴');
 ```
 
-All public methods on `Pino\Numera` are available through the facade.
+Every public method on `Pino\Numera` is available on the facade (`n2w`, `w2n`, `toOrdinal`, `toFraction`, `toPhone`, `toIp`, …).
 
-## Container binding
+## Service container
 
-The core instance is registered as a singleton under the `numera` key:
+Singleton binding key: `numera`
 
 ```php
+/** @var \Pino\Numera $numera */
 $numera = app('numera');
-// or
-$numera = app(\Pino\Numera::class); // not auto-aliased; use 'numera'
 ```
 
-## Monorepo development
+## Core documentation
 
-When hacking on both packages from the main [numera](https://github.com/pinoox/numera) repository, `composer.json` here uses a path repository to `../../`. Run tests:
+Locale list, regional variants, strategies, and advanced APIs:
+
+- [Main README / API reference](https://github.com/pinoox/numera/blob/master/README.md)
+- [CHANGELOG](https://github.com/pinoox/numera/blob/master/CHANGELOG.md)
+
+## Developing in the monorepo
+
+From the [numera](https://github.com/pinoox/numera) repository root:
 
 ```bash
 cd packages/laravel
@@ -76,4 +93,4 @@ vendor/bin/phpunit
 
 ## License
 
-MIT — same as pinoox/numera.
+MIT — same as [pinoox/numera](https://github.com/pinoox/numera).

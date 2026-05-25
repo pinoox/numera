@@ -23,8 +23,11 @@ echo Numera::init('fa')->n2w('۱۲۳۴');
 echo Numera::init('en')->toYear(2024);
 ```
 
-Install: `composer require pinoox/numera` — see [CHANGELOG.md](CHANGELOG.md) for release notes.
+Install (plain PHP): `composer require pinoox/numera` — see [CHANGELOG.md](CHANGELOG.md) for release notes.
 
+**Using Laravel?** Go to [For Laravel users](#for-laravel-users) — install `pinoox/numera-laravel` only.
+
+* [For Laravel users](#for-laravel-users)
 * [Features](#features)
 * [API reference](#api-reference)
 * [Project layout](#project-layout)
@@ -47,7 +50,6 @@ Install: `composer require pinoox/numera` — see [CHANGELOG.md](CHANGELOG.md) f
     * [Phone Numbers](#phone-numbers)
     * [Roman Numerals](#roman-numerals)
     * [IP and Version Strings](#ip-and-version-strings)
-    * [Laravel Integration](#laravel-integration)
 * [Supported Languages](#supported-languages)
 * [Set Locale](#set-locale)
 * [Set Locale Fallback](#set-locale-fallback)
@@ -75,7 +77,7 @@ Install: `composer require pinoox/numera` — see [CHANGELOG.md](CHANGELOG.md) f
 * Fractions (`toFraction()` / `n2f()`), year reading (`toYear()` / `n2y()`), phone numbers (`toPhone()` / `n2p()`)
 * Roman numerals (`toRoman()` / `n2r()`, `Numera::fromRoman()`)
 * IPv4 and semver reading (`toIp()` / `n2ip()`, `toVersion()`)
-* Laravel package [`pinoox/numera-laravel`](packages/laravel/)
+* Laravel bridge — see [For Laravel users](#for-laravel-users) (`pinoox/numera-laravel`)
 * 180+ ISO 639-1 language packs (English and Persian fully extended)
 * Camel case support for output words
 * Easy to use and extend
@@ -123,13 +125,65 @@ src/
   Languages/              # English-specific year rules
   lang/                   # Per-locale translations (184+ files)
   data/                   # numbers.php, regional-locales, …
-packages/laravel/         # pinoox/numera-laravel (monorepo)
+packages/laravel/         # Laravel bridge (see packages/laravel/README.md)
 tests/                    # PHPUnit (1000+ tests)
 ```
 
 
+**For Laravel users**
+---------------------
+
+Use the dedicated Laravel package — it pulls in `pinoox/numera` automatically.
+
+### Install
+
+```bash
+composer require pinoox/numera-laravel
+```
+
+| Requirement | Version |
+|-------------|---------|
+| PHP | ^8.0 |
+| Laravel | 9, 10, or 11 |
+| Packagist | [pinoox/numera-laravel](https://packagist.org/packages/pinoox/numera-laravel) |
+
+No manual service-provider registration: Laravel **auto-discovers** `NumeraServiceProvider` and registers the **`Numera` facade**.
+
+### Configuration (required once)
+
+```bash
+php artisan vendor:publish --tag=numera-config
+```
+
+Edit `config/numera.php`:
+
+```php
+'default_locale' => 'en',   // or fa, de, fa-IR, …
+'fallback_locale' => 'en',
+```
+
+### Usage
+
+```php
+use Pinoox\Numera\Laravel\Facades\Numera;
+
+echo Numera::n2w(1234);
+echo Numera::toYear(2024);
+echo Numera::setLocale('fa')->n2w(-500);
+```
+
+All methods from the core library (`n2w`, `w2n`, `toCurrency`, `toFraction`, …) work on the facade.
+
+### More detail
+
+* Full Laravel guide: [packages/laravel/README.md](packages/laravel/README.md)
+* Core API (all locales and options): sections below in this README
+
+
 **Installation and Setup**
 -------------------------
+
+> **Note:** This section is for **plain PHP** (Symfony, WordPress, custom apps). Laravel projects should follow [For Laravel users](#for-laravel-users) above.
 
 ### Install via Composer
 
@@ -360,31 +414,6 @@ echo Numera::init('en')->toVersion('2.14.0');
 echo Numera::init('en')->toVersion('1.0.0-beta');
 ```
 
-### Laravel Integration
-
-The Laravel bridge lives in this monorepo under `packages/laravel/` ([full docs](packages/laravel/README.md)). On Packagist: `pinoox/numera-laravel`.
-
-```bash
-composer require pinoox/numera
-composer require pinoox/numera-laravel
-```
-
-```php
-use Pinoox\Numera\Laravel\Facades\Numera;
-
-echo Numera::n2w(42);
-echo Numera::toYear(2024);
-echo Numera::toFraction(0.5);
-```
-
-Publish config:
-
-```bash
-php artisan vendor:publish --tag=numera-config
-```
-
-Config keys: `default_locale`, `fallback_locale` (see `packages/laravel/config/numera.php`).
-
 ### Supported Languages
 
 Numera ships with **184 ISO 639-1** language packs under `src/lang/`, plus **regional variants** such as `en-US`, `en-GB`, `fa-IR`, `de-DE` (see `src/data/regional-locales.php`). Each base file contains cardinals, separators, and v1.2 keys (`negative`, `point`, `ordinals`, `currencies`, `units`, `weekdays`, …). Edit the locale file directly — see `src/lang/en.php` and `TranslationGuide.md`.
@@ -492,7 +521,7 @@ New methods are additive; existing `n2w`, `w2n`, `toCurrency`, etc. are unchange
 * [README.md](README.md) — This file
 * [CHANGELOG.md](CHANGELOG.md) — Release history
 * [TranslationGuide.md](TranslationGuide.md) — Creating or extending language packs
-* [packages/laravel/README.md](packages/laravel/README.md) — Laravel Facade and config
+* [packages/laravel/README.md](packages/laravel/README.md) — **Laravel users:** install guide (`composer require pinoox/numera-laravel`)
 * [src/lang/_schema.php](src/lang/_schema.php) — Expected locale file structure
 * [src/lang/en.php](src/lang/en.php) — Reference locale (full v2.1 keys)
 
