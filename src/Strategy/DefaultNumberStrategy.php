@@ -15,18 +15,18 @@ class DefaultNumberStrategy implements NumberStrategyInterface
         $thousands = $numera->dataNumber('thousands');
 
         if ($num < 10) {
-            return $numera->translate($units[$num]);
+            return $this->finalize($numera, $numera->translate($units[$num]));
         }
         if ($num < 20) {
-            return $numera->translate($teens[$num - 10]);
+            return $this->finalize($numera, $numera->translate($teens[$num - 10]));
         }
         if ($num < 100) {
-            return $numera->translate($tens[(int)($num / 10)])
-                . ($num % 10 !== 0 ? '{ten}' . $numera->translate($units[$num % 10]) : '');
+            return $this->finalize($numera, $numera->translate($tens[(int)($num / 10)])
+                . ($num % 10 !== 0 ? '{ten}' . $numera->translate($units[$num % 10]) : ''));
         }
         if ($num < 1000) {
-            return $numera->translate($hundreds[(int)($num / 100)])
-                . ($num % 100 !== 0 ? '{hundred}' . $this->convertToWords($numera, $num % 100) : '');
+            return $this->finalize($numera, $numera->translate($hundreds[(int)($num / 100)])
+                . ($num % 100 !== 0 ? '{hundred}' . $this->convertToWords($numera, $num % 100) : ''));
         }
 
         $result = '';
@@ -42,6 +42,11 @@ class DefaultNumberStrategy implements NumberStrategyInterface
             $num = (int)($num / 1000);
         }
 
+        return $this->finalize($numera, $result);
+    }
+
+    private function finalize(Numera $numera, string $result): string
+    {
         return $numera->replaceSeparator($result);
     }
 
@@ -64,14 +69,14 @@ class DefaultNumberStrategy implements NumberStrategyInterface
 
     public function convertToNumber(Numera $numera, string $words, string|array|null $separators = null): int
     {
-        $translations = array_flip($numera->getLocaleTranslates());
+        $translations = array_flip(array_filter($numera->getLocaleTranslates(), static fn($value) => is_string($value)));
         $wordsArray = $numera->getArrayBySeparator($words, $separators);
         $number = 0;
         $numbers = $numera->dataNumber('numbers');
         $tempNumber = 0;
 
         foreach ($wordsArray as $word) {
-            $word = strtolower($word);
+            $word = mb_strtolower($word);
 
             if (is_numeric($word)) {
                 $num = (int)$word;

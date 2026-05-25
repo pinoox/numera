@@ -12,6 +12,10 @@ vendor
 
 # PHPUnit
 .phpunit.result.cache
+.phpunit.cache
 
 # MacOS
 .DS_Store
+
+# Local / IDE noise
+MAMP_php_error_log*
