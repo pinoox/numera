@@ -6,11 +6,7 @@
     "number translate"
   ],
   "type": "library",
-<<<<<<< HEAD
   "version": "2.0.0",
-=======
-  "version": "1.1.2",
->>>>>>> upstream/master
   "homepage": "http://www.pinoox.com/",
   "license": "MIT",
   "authors": [
