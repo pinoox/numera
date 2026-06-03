@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.1.2 — 2026-06-03
+
+### Fixed
+
+- **PHP 8.0**: removed `readonly` property promotion (Parse error on 8.0 smoke tests)
+- **CI**: PHPUnit 10 on PHP 8.1+ only; PHP 8.0 smoke job with `--no-dev`
+- **CI**: coverage only on PHP 8.3; `--no-coverage` on 8.1/8.2; PHPUnit `<source>` filter for Codecov
+- Added committed `composer.lock` for reproducible installs
+
+### Changed
+
+- Laravel bridge: standalone [pinoox/numera-laravel](https://github.com/pinoox/numera-laravel); removed `packages/` from this repo
+- README: dedicated [For Laravel users](https://github.com/pinoox/numera#for-laravel-users) section
+
 ## 2.1.1 — 2026-05-25
 
 ### Changed
