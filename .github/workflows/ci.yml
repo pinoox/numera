@@ -17,22 +17,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup PHP
+      - name: Setup PHP (with coverage driver)
+        if: matrix.php == '8.3'
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           coverage: xdebug
 
+      - name: Setup PHP
+        if: matrix.php != '8.3'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
       - name: Run PHPUnit
-        if: matrix.php != '8.3'
-        run: vendor/bin/phpunit
-
-      - name: Run PHPUnit with coverage
-        if: matrix.php == '8.3'
-        run: vendor/bin/phpunit --coverage-clover=coverage.xml
+        run: |
+          if [ "${{ matrix.php }}" = "8.3" ]; then
+            vendor/bin/phpunit --coverage-clover=coverage.xml
+          else
+            vendor/bin/phpunit --no-coverage
+          fi
 
       - name: Upload coverage to Codecov
         if: matrix.php == '8.3'
