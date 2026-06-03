@@ -15,6 +15,3 @@ vendor
 
 # MacOS
 .DS_Store
-
-# Local / IDE noise
-MAMP_php_error_log*
