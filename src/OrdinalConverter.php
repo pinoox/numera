@@ -4,7 +4,7 @@ namespace Pino;
 
 final class OrdinalConverter
 {
-    public function __construct(private readonly Numera $numera)
+    public function __construct(private Numera $numera)
     {
     }
 

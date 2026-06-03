@@ -6,9 +6,9 @@ namespace Pino\Support;
 final class ParsedWordNumber
 {
     public function __construct(
-        public readonly int $integerPart,
-        public readonly string $decimalDigits = '',
-        public readonly bool $isNegative = false,
+        public int $integerPart,
+        public string $decimalDigits = '',
+        public bool $isNegative = false,
     ) {
     }
 

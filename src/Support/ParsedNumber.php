@@ -5,9 +5,9 @@ namespace Pino\Support;
 final class ParsedNumber
 {
     public function __construct(
-        public readonly bool $isNegative,
-        public readonly int $integerPart,
-        public readonly string $decimalDigits,
+        public bool $isNegative,
+        public int $integerPart,
+        public string $decimalDigits,
     ) {
     }
 
